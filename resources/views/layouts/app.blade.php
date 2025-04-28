@@ -1,57 +1,36 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>@yield('title', 'Mi Aplicación')</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizzería</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    @stack('styles') {{-- este espacio seria por si se desea implementar un estilo a una vista en especifico --}}
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">PIZZERIA</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('clients.index') }}">Clientes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('employees.index') }}">Empleados</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('extra-ingredients.index') }}">Ingredientes Extra</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('ingredients.index') }}">Ingredientes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('orders.index') }}">Órdenes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('pizzas.index') }}">Pizzas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('purchases.index') }}">Compras</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('suppliers.index') }}">Proveedores</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('profile.edit') }}">Perfil</a>
-                </li>
+
+<body class="bg-gray-100">
+
+    <!-- Sidebar -->
+    <div class="flex h-screen">
+        <div class="w-64 bg-gray-800 text-white p-4">
+            <h2 class="text-xl font-semibold mb-6">Menú</h2>
+            <ul>
+                {{-- Menú principal de navegación --}}
+                <li><a href="{{ route('dashboard') }}" class="block py-2">Dashboard</a></li>
+                <li><a href="{{ route('users.index') }}" class="block py-2">Usuarios</a></li>
+                <li><a href="{{ route('orders.index') }}" class="block py-2">Pedidos</a></li>
+                <li><a href="{{ route('pizzas.index') }}" class="block py-2">Pizzas</a></li>
+                <li><a href="{{ route('inventory.index') }}" class="block py-2">Inventario</a></li>
+                <li><a href="{{ route('suppliers.index') }}" class="block py-2">Proveedores</a></li>
+                <li><a href="{{ route('branches.index') }}" class="block py-2">Sucursales</a></li>
             </ul>
         </div>
-    </nav>
 
-    <div class="container mt-4">
-        @yield('content')
+        <div class="flex-1 p-6">
+            @yield('content') {{-- Aquí se incluira el contenido específico de cada vista --}}
+        </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
