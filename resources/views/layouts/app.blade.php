@@ -17,13 +17,7 @@
             <h2 class="text-xl font-semibold mb-6">Menú</h2>
             <ul>
                 {{-- Menú principal de navegación --}}
-                <li><a href="{{ route('dashboard') }}" class="block py-2">Dashboard</a></li>
-                <li><a href="{{ route('users.index') }}" class="block py-2">Usuarios</a></li>
-                <li><a href="{{ route('orders.index') }}" class="block py-2">Pedidos</a></li>
                 <li><a href="{{ route('pizzas.index') }}" class="block py-2">Pizzas</a></li>
-                <li><a href="{{ route('inventory.index') }}" class="block py-2">Inventario</a></li>
-                <li><a href="{{ route('suppliers.index') }}" class="block py-2">Proveedores</a></li>
-                <li><a href="{{ route('branches.index') }}" class="block py-2">Sucursales</a></li>
             </ul>
         </div>
 
