@@ -1,57 +1,30 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>@yield('title', 'Mi Aplicación')</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">PIZZERIA</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('clients.index') }}">Clientes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('employees.index') }}">Empleados</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('extra-ingredients.index') }}">Ingredientes Extra</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('ingredients.index') }}">Ingredientes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('orders.index') }}">Órdenes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('pizzas.index') }}">Pizzas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('purchases.index') }}">Compras</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('suppliers.index') }}">Proveedores</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('profile.edit') }}">Perfil</a>
-                </li>
-            </ul>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <title>{{ config('app.name', 'Laravel') }}</title>
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+    <body class="font-sans text-gray-900 antialiased">
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+            <div>
+                <a href="/">
+                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                </a>
+            </div>
+
+            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+                {{ $slot }}
+            </div>
         </div>
-    </nav>
-
-    <div class="container mt-4">
-        @yield('content')
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+    </body>
 </html>
