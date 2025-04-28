@@ -8,10 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class PizzaIngredient extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'pizza_id',
         'ingredient_id',
     ];
-    protected $table = 'pizza_ingredient';
-    protected $primaryKey = 'id';
 }
