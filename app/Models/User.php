@@ -1,5 +1,3 @@
-<?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,13 +26,21 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    
+    /**
+     * Relación 1:1 con Client.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function client()
     {
         return $this->hasOne(Client::class);
     }
 
-    
+    /**
+     * Relación 1:1 con Employee.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function employee()
     {
         return $this->hasOne(Employee::class);

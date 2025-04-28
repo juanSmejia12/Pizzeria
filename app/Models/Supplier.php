@@ -2,14 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Supplier extends Model
 {
-    protected $fillable = ['name', 'phone', 'email', 'address'];
+    use HasFactory;
 
-    public function rawMaterials()
+    protected $fillable = [
+        'name',
+        'contact_info',
+    ];
+
+    public function purchases()
     {
-        return $this->hasMany(RawMaterial::class);
+        return $this->hasMany(Purchase::class);
     }
 }

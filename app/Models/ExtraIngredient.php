@@ -2,16 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ExtraIngredient extends Model
 {
-    protected $fillable = ['name', 'price'];
+    use HasFactory;
 
-    public function orders(): BelongsToMany
+    protected $fillable = [
+        'name',
+        'price',
+    ];
+
+    public function orders()
     {
-        return $this->belongsToMany(Order::class, 'order_extra_ingredient')
-                   ->withPivot('quantity');
+        return $this->belongsToMany(Order::class, 'order_extra_ingredient');
     }
 }

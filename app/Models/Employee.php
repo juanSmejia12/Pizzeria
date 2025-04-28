@@ -2,19 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
-    protected $fillable = ['user_id', 'position', 'identification_number', 'salary', 'hire_date'];
+    use HasFactory;
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $fillable = [
+        'user_id', 'position', 'identification_number', 'salary', 'hire_date',
+    ];
 
-    public function deliveries()
+    // Relación con Orders
+    public function orders()
     {
-        return $this->hasMany(Order::class, 'delivery_person_id');
+        return $this->hasMany(Order::class);
     }
 }
+
