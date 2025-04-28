@@ -9,6 +9,8 @@ class PizzaRawMaterial extends Model
 {
     use HasFactory;
 
+    protected $table = 'pizza_raw_material';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'pizza_id',
         'raw_material_id',
