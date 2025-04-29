@@ -1,27 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Lista de Materias Primas</h1>
-    <a href="{{ route('raw_materials.create') }}" class="btn btn-primary">Agregar Materia Prima</a>
+    <h1>Lista de Materias Primas de Pizzas</h1>
+    <a href="{{ route('pizza_raw_materials.create') }}" class="btn btn-primary">Agregar Materia Prima a Pizza</a>
     <table class="table">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Nombre</th>
-                <th>Unidad</th>
-                <th>Stock Actual</th>
+                <th>Pizza</th>
+                <th>Materia Prima</th>
+                <th>Cantidad</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($raw_materials as $raw_material)
+            @foreach ($pizza_raw_materials as $pizza_raw_material)
                 <tr>
-                    <td>{{ $raw_material->id }}</td>
-                    <td>{{ $raw_material->name }}</td>
-                    <td>{{ $raw_material->unit }}</td>
-                    <td>{{ $raw_material->current_stock }}</td>
+                    <td>{{ $pizza_raw_material->id }}</td>
+                    <td>{{ $pizza_raw_material->pizza->name }}</td>
+                    <td>{{ $pizza_raw_material->raw_material->name }}</td>
+                    <td>{{ $pizza_raw_material->quantity }}</td>
                     <td>
-                        <a href="{{ route('raw_materials.edit', $raw_material->id) }}" class="btn btn-warning">Editar</a>
+                        <a href="{{ route('pizza_raw_materials.edit', $pizza_raw_material->id) }}" class="btn btn-warning">Editar</a>
                     </td>
                 </tr>
             @endforeach
