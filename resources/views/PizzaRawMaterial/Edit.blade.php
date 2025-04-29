@@ -1,21 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Editar Materia Prima</h1>
-    <form action="{{ route('raw_materials.update', $raw_material->id) }}" method="POST">
+    <h1>Editar Materia Prima de Pizza</h1>
+    <form action="{{ route('pizza_raw_materials.update', $pizza_raw_material->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group">
-            <label for="name">Nombre</label>
-            <input type="text" name="name" class="form-control" value="{{ $raw_material->name }}" required>
+            <label for="pizza_id">Pizza</label>
+            <select name="pizza_id" class="form-control" required>
+                @foreach ($pizzas as $pizza)
+                    <option value="{{ $pizza->id }}" {{ $pizza_raw_material->pizza_id == $pizza->id ? 'selected' : '' }}>
+                        {{ $pizza->name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
         <div class="form-group">
-            <label for="unit">Unidad</label>
-            <input type="text" name="unit" class="form-control" value="{{ $raw_material->unit }}" required>
+            <label for="raw_material_id">Materia Prima</label>
+            <select name="raw_material_id" class="form-control" required>
+                @foreach ($raw_materials as $raw_material)
+                    <option value="{{ $raw_material->id }}" {{ $pizza_raw_material->raw_material_id == $raw_material->id ? 'selected' : '' }}>
+                        {{ $raw_material->name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
         <div class="form-group">
-            <label for="current_stock">Stock Actual</label>
-            <input type="text" name="current_stock" class="form-control" value="{{ $raw_material->current_stock }}" required>
+            <label for="quantity">Cantidad</label>
+            <input type="text" name="quantity" class="form-control" value="{{ $pizza_raw_material->quantity }}" required>
         </div>
         <button type="submit" class="btn btn-primary">Actualizar</button>
     </form>
