@@ -5,22 +5,19 @@
 
     <form action="{{ route('clients.store') }}" method="POST">
         @csrf
-
-        <div class="form-group">
-            <label for="user_id">ID de Usuario</label>
-            <input type="number" name="user_id" id="user_id" class="form-control" required>
-        </div>
+        <input type="hidden" name="user_id" value="{{ request('user_id') }}">
 
         <div class="form-group">
             <label for="address">Dirección</label>
-            <input type="text" name="address" id="address" class="form-control">
+            <input type="text" name="address" class="form-control" required>
         </div>
 
         <div class="form-group">
             <label for="phone">Teléfono</label>
-            <input type="text" name="phone" id="phone" class="form-control">
+            <input type="text" name="phone" class="form-control" required>
         </div>
 
-        <button type="submit" class="btn btn-success">Guardar Cliente</button>
+        <button type="submit" class="btn btn-primary">Guardar Cliente</button>
     </form>
 @endsection
+

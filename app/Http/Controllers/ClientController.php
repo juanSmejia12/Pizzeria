@@ -17,12 +17,12 @@ class ClientController extends Controller
     {
         $request->validate([
             'user_id' => 'required|exists:users,id',
-            'address' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:20',
+            'address' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
         ]);
-
+    
         Client::create($request->all());
-
+    
         return redirect()->route('clients.index')->with('success', 'Cliente creado correctamente.');
     }
 
@@ -57,8 +57,12 @@ class ClientController extends Controller
         $client->delete();
         return response()->json(['message' => 'Client deleted successfully']);
     }
-    public function create()
+    public function create(Request $request)
     {
-        return view('client.create');
+        if (!$request->has('user_id')) {
+            return redirect()->route('users.create')
+                ->with('info', 'Primero debes crear un usuario con el rol de cliente.');//como la tabla cliente depende del id del ususario para ser creado, es necesario pasar el dato 
+        }
+        return view('client.create', ['user_id' => $request->user_id]);
     }
 }

@@ -11,6 +11,11 @@
     </div>
 @endif
     <h1>Crear Usuario</h1>
+    @if (session('info'))
+    <div class="alert alert-info">
+        {{ session('info') }}
+    </div>
+@endif
     <form action="{{ route('users.store') }}" method="POST">
         @csrf
         <div class="form-group">
