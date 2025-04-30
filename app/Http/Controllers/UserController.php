@@ -12,9 +12,12 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return response()->json($users);
+        return view('user.index', compact('users'));
     }
-
+    public function create()
+    {
+        return view('user.create');
+    }
     public function store(Request $request)
     {
         $request->validate([
@@ -24,14 +27,14 @@ class UserController extends Controller
             'role' => 'required|string|in:cliente,empleado',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
+            User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role' => $request->role,
+    ]);
 
-        return response()->json($user, 201);
+        return redirect()->route('users.index')->with('success', 'Usuario creado correctamente.');
     }
 
     public function show($id)
@@ -47,12 +50,27 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
+    
         if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+            return redirect()->route('users.index')->with('error', 'Usuario no encontrado.');
         }
-
-        $user->update($request->all());
-        return response()->json($user);
+    
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'role' => 'required|string|in:cliente,empleado',
+            'password' => 'nullable|string|min:8',
+        ]);
+    
+        $data = $request->only('name', 'email', 'role');
+    
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+    
+        $user->update($data);
+    
+        return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente.');
     }
 
     public function destroy($id)
@@ -64,5 +82,9 @@ class UserController extends Controller
 
         $user->delete();
         return response()->json(['message' => 'User deleted successfully']);
+    }
+    public function edit(User $user)
+    {
+        return view('user.edit', compact('user'));
     }
 }

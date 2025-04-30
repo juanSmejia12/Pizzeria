@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +15,18 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+use Illuminate\Support\Facades\DB;
+
+Route::get('/test-db', function () {
+    try {
+        DB::connection()->getPdo();
+        return '¡Conexión exitosa a la base de datos!';
+    } catch (\Exception $e) {
+        return 'Error de conexión: ' . $e->getMessage();
+    }
+});
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,3 +43,18 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
+
+// Ruta para ver el formulario de creación
+Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
+
+// Ruta para guardar el cliente (desde el formulario)
+Route::post('/clients', [ClientController::class, 'store'])->name('clients.store');
+
+//User
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');

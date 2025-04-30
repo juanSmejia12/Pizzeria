@@ -10,7 +10,7 @@ class ClientController extends Controller
     public function index()
     {
         $clients = Client::all();
-        return response()->json($clients);
+        return view('client.index', compact('clients'));
     }
 
     public function store(Request $request)
@@ -21,9 +21,9 @@ class ClientController extends Controller
             'phone' => 'nullable|string|max:20',
         ]);
 
-        $client = Client::create($request->all());
+        Client::create($request->all());
 
-        return response()->json($client, 201);
+        return redirect()->route('clients.index')->with('success', 'Cliente creado correctamente.');
     }
 
     public function show($id)
@@ -56,5 +56,9 @@ class ClientController extends Controller
 
         $client->delete();
         return response()->json(['message' => 'Client deleted successfully']);
+    }
+    public function create()
+    {
+        return view('client.create');
     }
 }
