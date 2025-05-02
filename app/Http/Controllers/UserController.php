@@ -53,23 +53,19 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-    
-        if (!$user) {
-            return redirect()->route('users.index')->with('error', 'Usuario no encontrado.');
-        }
-    
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'role' => 'required|string|in:cliente,empleado',
+            'email' => 'required|email|max:255|unique:users,email,' . $id,
+            'role' => 'required|string|in:admin,empleado',
             'password' => 'nullable|string|min:8',
         ]);
+    
+        $user = User::findOrFail($id);
     
         $data = $request->only('name', 'email', 'role');
     
         if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
+            $data['password'] = \Hash::make($request->password);
         }
     
         $user->update($data);
@@ -80,12 +76,13 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
 
+        if (!$user) {
+            return redirect()->route('users.index')->with('error', 'Usuario no encontrado.');
+        }
+    
         $user->delete();
-        return response()->json(['message' => 'User deleted successfully']);
+        return redirect()->route('users.index')->with('success', 'Usuario eliminado correctamente.');
     }
     public function edit(User $user)
     {
