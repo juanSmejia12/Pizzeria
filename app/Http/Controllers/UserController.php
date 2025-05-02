@@ -27,18 +27,18 @@ class UserController extends Controller
             'role' => 'required|string|in:cliente,empleado',
         ]);
 
-        $user=User::create([
+            $user = User::create([
         'name' => $request->name,
         'email' => $request->email,
         'password' => Hash::make($request->password),
         'role' => $request->role,
     ]);
 
-    if ($user->role === 'cliente') {
-        return redirect()->route('clients.create', ['user_id' => $user->id]);//esto es por si es un cliente, termine de llenar los campos que solicita la tabla client
-    }
-
-        return redirect()->route('users.index')->with('success', 'Usuario creado correctamente.');
+        if ($user->role === 'cliente') {
+            return redirect()->route('clients.create', ['user_id' => $user->id]);
+        } elseif ($user->role === 'empleado') {
+            return redirect()->route('employees.create', ['user_id' => $user->id]);
+        }
     }
 
     public function show($id)

@@ -10,7 +10,7 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::all();
-        return response()->json($employees);
+        return view('employee.index', compact('employees'));
     }
 
     public function store(Request $request)
@@ -23,8 +23,9 @@ class EmployeeController extends Controller
             'hire_date' => 'required|date',
         ]);
 
-        $employee = Employee::create($request->all());
-        return response()->json($employee, 201);
+        Employee::create($request->all());
+
+        return redirect()->route('employees.index')->with('success', 'Empleado creado correctamente.');
     }
 
     public function show($id)
@@ -58,4 +59,14 @@ class EmployeeController extends Controller
         $employee->delete();
         return response()->json(['message' => 'Employee deleted successfully']);
     }
+    public function create(Request $request)
+{
+    if (!$request->has('user_id')) {
+        return redirect()->route('users.create')
+            ->with('info', 'Primero debes crear un usuario con el rol de empleado.');
+    }
+
+    return view('employee.create', ['user_id' => $request->user_id]);
+}
+
 }
