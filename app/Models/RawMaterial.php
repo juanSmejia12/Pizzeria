@@ -15,8 +15,10 @@ class RawMaterial extends Model
         'current_stock',
     ];
 
+    // Relación N:N con Pizza
     public function pizzas()
     {
-        return $this->belongsToMany(Pizza::class, 'pizza_raw_material');
+        return $this->belongsToMany(Pizza::class, 'pizza_raw_material', 'raw_material_id', 'pizza_id')
+                    ->withTimestamps();
     }
 }

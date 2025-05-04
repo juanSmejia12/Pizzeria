@@ -10,7 +10,12 @@ class PizzaController extends Controller
     public function index()
     {
         $pizzas = Pizza::all();
-        return response()->json($pizzas);
+        return view('pizza.index', compact('pizzas'));
+    }
+
+    public function create()
+    {
+        return view('pizza.create');
     }
 
     public function store(Request $request)
@@ -19,39 +24,34 @@ class PizzaController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $pizza = Pizza::create($request->all());
-        return response()->json($pizza, 201);
+        Pizza::create($request->all());
+
+        return redirect()->route('pizzas.index')->with('success', 'Pizza creada correctamente.');
     }
 
-    public function show($id)
+    public function edit($id)
     {
-        $pizza = Pizza::find($id);
-        if ($pizza) {
-            return response()->json($pizza);
-        }
-
-        return response()->json(['message' => 'Pizza not found'], 404);
+        $pizza = Pizza::findOrFail($id);
+        return view('pizza.edit', compact('pizza'));
     }
 
     public function update(Request $request, $id)
     {
-        $pizza = Pizza::find($id);
-        if (!$pizza) {
-            return response()->json(['message' => 'Pizza not found'], 404);
-        }
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
 
+        $pizza = Pizza::findOrFail($id);
         $pizza->update($request->all());
-        return response()->json($pizza);
+
+        return redirect()->route('pizzas.index')->with('success', 'Pizza actualizada correctamente.');
     }
 
     public function destroy($id)
     {
-        $pizza = Pizza::find($id);
-        if (!$pizza) {
-            return response()->json(['message' => 'Pizza not found'], 404);
-        }
-
+        $pizza = Pizza::findOrFail($id);
         $pizza->delete();
-        return response()->json(['message' => 'Pizza deleted successfully']);
+
+        return redirect()->route('pizzas.index')->with('success', 'Pizza eliminada correctamente.');
     }
 }

@@ -7,15 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PizzaSize extends Model
 {
-    use HasFactory;
-
-    protected $table = 'pizza_size';
-    protected $primaryKey = 'id';
-    protected $fillable = [
-        'pizza_id',
-        'size',
-        'price',
-    ];
+    protected $fillable = ['pizza_id', 'size', 'price'];
 
     public function pizza()
     {

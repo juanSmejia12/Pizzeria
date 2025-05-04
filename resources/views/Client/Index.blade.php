@@ -19,7 +19,7 @@
                     <td>{{ $client->address }}</td>
                     <td>{{ $client->phone }}</td>
                     <td>
-                        <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-warning">Editar</a>
+                     {{--   <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-warning">Editar</a> --}}
                     </td>
                 </tr>
             @endforeach
