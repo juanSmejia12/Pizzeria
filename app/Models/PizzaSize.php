@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class PizzaSize extends Model
 {
+    use HasFactory;
+
+    protected $table = 'pizza_size'; // Esto soluciona el error
+
     protected $fillable = ['pizza_id', 'size', 'price'];
 
     public function pizza()

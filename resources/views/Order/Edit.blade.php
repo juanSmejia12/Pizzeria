@@ -2,8 +2,17 @@
 
 @section('content')
     <h1>Editar Pedido</h1>
-    
-    <!-- Formulario para editar un pedido -->
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ route('orders.update', $order->id) }}" method="POST">
         @csrf
         @method('PUT')
@@ -19,7 +28,7 @@
             </select>
         </div>
 
-        <div class="form-group">
+        <div class="form-group mt-2">
             <label for="branch_id">Sucursal</label>
             <select name="branch_id" class="form-control" required>
                 @foreach ($branches as $branch)
@@ -30,12 +39,12 @@
             </select>
         </div>
 
-        <div class="form-group">
+        <div class="form-group mt-2">
             <label for="total_price">Total</label>
-            <input type="text" name="total_price" class="form-control" value="{{ $order->total_price }}" required>
+            <input type="number" name="total_price" class="form-control" step="0.01" value="{{ $order->total_price }}" required>
         </div>
 
-        <div class="form-group">
+        <div class="form-group mt-2">
             <label for="status">Estatus</label>
             <select name="status" class="form-control" required>
                 <option value="pendiente" {{ $order->status == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
@@ -45,7 +54,7 @@
             </select>
         </div>
 
-        <div class="form-group">
+        <div class="form-group mt-2">
             <label for="delivery_type">Tipo de Entrega</label>
             <select name="delivery_type" class="form-control" required>
                 <option value="en_local" {{ $order->delivery_type == 'en_local' ? 'selected' : '' }}>En Local</option>
@@ -53,7 +62,9 @@
             </select>
         </div>
 
-        <!-- Botón para enviar el formulario -->
-        <button type="submit" class="btn btn-primary">Actualizar</button>
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <a href="{{ route('orders.index') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 @endsection

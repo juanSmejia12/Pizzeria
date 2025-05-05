@@ -2,33 +2,39 @@
 
 @section('content')
     <h1>Editar Materia Prima de Pizza</h1>
-    <form action="{{ route('pizza_raw_materials.update', $pizza_raw_material->id) }}" method="POST">
+
+    <form action="{{ route('pizza-raw-materials.update', $pizzaRawMaterial->id) }}" method="POST">
         @csrf
         @method('PUT')
+
         <div class="form-group">
             <label for="pizza_id">Pizza</label>
             <select name="pizza_id" class="form-control" required>
                 @foreach ($pizzas as $pizza)
-                    <option value="{{ $pizza->id }}" {{ $pizza_raw_material->pizza_id == $pizza->id ? 'selected' : '' }}>
+                    <option value="{{ $pizza->id }}" {{ $pizzaRawMaterial->pizza_id == $pizza->id ? 'selected' : '' }}>
                         {{ $pizza->name }}
                     </option>
                 @endforeach
             </select>
         </div>
+
         <div class="form-group">
             <label for="raw_material_id">Materia Prima</label>
             <select name="raw_material_id" class="form-control" required>
-                @foreach ($raw_materials as $raw_material)
-                    <option value="{{ $raw_material->id }}" {{ $pizza_raw_material->raw_material_id == $raw_material->id ? 'selected' : '' }}>
-                        {{ $raw_material->name }}
+                @foreach ($rawMaterials as $material)
+                    <option value="{{ $material->id }}" {{ $pizzaRawMaterial->raw_material_id == $material->id ? 'selected' : '' }}>
+                        {{ $material->name }} ({{ $material->unit }})
                     </option>
                 @endforeach
             </select>
         </div>
+
         <div class="form-group">
             <label for="quantity">Cantidad</label>
-            <input type="text" name="quantity" class="form-control" value="{{ $pizza_raw_material->quantity }}" required>
+            <input type="number" name="quantity" class="form-control" value="{{ $pizzaRawMaterial->quantity }}" step="0.01" min="0" required>
         </div>
+
         <button type="submit" class="btn btn-primary">Actualizar</button>
+        <a href="{{ route('pizza-raw-materials.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>
 @endsection

@@ -12,14 +12,14 @@ class PizzaIngredientController extends Controller
     public function index()
     {
         $pizzaIngredients = PizzaIngredient::with(['pizza', 'ingredient'])->get();
-        return view('pizza_ingredient.index', compact('pizzaIngredients'));
+        return view('PizzaIngredient.index', compact('pizzaIngredients'));  // Cambié a 'PizzaIngredient.index'
     }
 
     public function create()
     {
         $pizzas = Pizza::all();
         $ingredients = Ingredient::all();
-        return view('pizza_ingredient.create', compact('pizzas', 'ingredients'));
+        return view('PizzaIngredient.create', compact('pizzas', 'ingredients'));  // Cambié a 'PizzaIngredient.create'
     }
 
     public function store(Request $request)
@@ -31,7 +31,7 @@ class PizzaIngredientController extends Controller
 
         PizzaIngredient::create($request->all());
 
-        return redirect()->route('pizza_ingredients.index')->with('success', 'Ingrediente agregado a la pizza correctamente.');
+        return redirect()->route('pizza-ingredients.index')->with('success', 'Ingrediente agregado a la pizza correctamente.');
     }
 
     public function edit($id)
@@ -40,7 +40,7 @@ class PizzaIngredientController extends Controller
         $pizzas = Pizza::all();
         $ingredients = Ingredient::all();
 
-        return view('pizza_ingredient.edit', compact('pizzaIngredient', 'pizzas', 'ingredients'));
+        return view('PizzaIngredient.edit', compact('pizzaIngredient', 'pizzas', 'ingredients'));  // Cambié a 'PizzaIngredient.edit'
     }
 
     public function update(Request $request, $id)
@@ -53,7 +53,7 @@ class PizzaIngredientController extends Controller
         $pizzaIngredient = PizzaIngredient::findOrFail($id);
         $pizzaIngredient->update($request->all());
 
-        return redirect()->route('pizza_ingredients.index')->with('success', 'Ingrediente de pizza actualizado correctamente.');
+        return redirect()->route('pizza-ingredients.index')->with('success', 'Ingrediente de pizza actualizado correctamente.');
     }
 
     public function destroy($id)
@@ -61,6 +61,6 @@ class PizzaIngredientController extends Controller
         $pizzaIngredient = PizzaIngredient::findOrFail($id);
         $pizzaIngredient->delete();
 
-        return redirect()->route('pizza_ingredients.index')->with('success', 'Ingrediente eliminado de la pizza.');
+        return redirect()->route('pizza-ingredients.index')->with('success', 'Ingrediente eliminado de la pizza.');
     }
 }

@@ -12,14 +12,14 @@ class PizzaRawMaterialController extends Controller
     public function index()
     {
         $pizzaRawMaterials = PizzaRawMaterial::with(['pizza', 'rawMaterial'])->get();
-        return view('pizza_raw_material.index', compact('pizzaRawMaterials'));
+        return view('PizzaRawMaterial.index', compact('pizzaRawMaterials')); // Cambiado a PizzaRawMaterial.index
     }
 
     public function create()
     {
         $pizzas = Pizza::all();
         $rawMaterials = RawMaterial::all();
-        return view('pizza_raw_material.create', compact('pizzas', 'rawMaterials'));
+        return view('PizzaRawMaterial.create', compact('pizzas', 'rawMaterials')); // Cambiado a PizzaRawMaterial.create
     }
 
     public function store(Request $request)
@@ -41,7 +41,7 @@ class PizzaRawMaterialController extends Controller
         $pizzas = Pizza::all();
         $rawMaterials = RawMaterial::all();
 
-        return view('pizza_raw_material.edit', compact('pizzaRawMaterial', 'pizzas', 'rawMaterials'));
+        return view('PizzaRawMaterial.edit', compact('pizzaRawMaterial', 'pizzas', 'rawMaterials')); // Cambiado a PizzaRawMaterial.edit
     }
 
     public function update(Request $request, $id)

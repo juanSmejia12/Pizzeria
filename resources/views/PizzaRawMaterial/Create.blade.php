@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Agregar Materia Prima a Pizza</h1>
-    <form action="{{ route('pizza_raw_materials.store') }}" method="POST">
+    <h1>Asignar Materia Prima a Pizza</h1>
+
+    <form action="{{ route('pizza-raw-materials.store') }}" method="POST">
         @csrf
+
         <div class="form-group">
             <label for="pizza_id">Pizza</label>
             <select name="pizza_id" class="form-control" required>
@@ -12,18 +14,22 @@
                 @endforeach
             </select>
         </div>
+
         <div class="form-group">
             <label for="raw_material_id">Materia Prima</label>
             <select name="raw_material_id" class="form-control" required>
-                @foreach ($raw_materials as $raw_material)
-                    <option value="{{ $raw_material->id }}">{{ $raw_material->name }}</option>
+                @foreach ($rawMaterials as $material)
+                    <option value="{{ $material->id }}">{{ $material->name }} ({{ $material->unit }})</option>
                 @endforeach
             </select>
         </div>
+
         <div class="form-group">
             <label for="quantity">Cantidad</label>
-            <input type="text" name="quantity" class="form-control" required>
+            <input type="number" name="quantity" class="form-control" step="0.01" min="0" required>
         </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
+
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a href="{{ route('pizza-raw-materials.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>
 @endsection
