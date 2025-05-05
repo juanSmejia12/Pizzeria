@@ -52,6 +52,7 @@ Route::get('/clients/create', [ClientController::class, 'create'])->name('client
 
 // Ruta para guardar el cliente (desde el formulario)
 Route::post('/clients', [ClientController::class, 'store'])->name('clients.store');
+Route::delete('/clients/{id}', [ClientController::class, 'destroy'])->name('clients.destroy');
 
 //User
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
@@ -65,3 +66,7 @@ Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
 Route::get('/employees/create', [EmployeeController::class, 'create'])->name('employees.create');
 Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
+Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
+Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+Route::put('/employees/{id}', [EmployeeController::class, 'update'])->name('employees.update');
+

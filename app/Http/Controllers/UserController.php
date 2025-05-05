@@ -9,10 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $users = User::all();
-        return view('user.index', compact('users'));
+    
+        return view('user.index', [
+            'users' => $users,
+            'from' => $request->query('from'),
+            'employee_id' => $request->query('employee_id'),
+            'client_id' => $request->query('client_id'),
+        ]);
     }
     public function create()
     {
@@ -73,7 +79,7 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente.');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $user = User::find($id);
 
@@ -81,6 +87,15 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('error', 'Usuario no encontrado.');
         }
     
+        if ($request->has('from') && $request->from === 'employee') {
+            $user->delete();
+            return redirect()->route('employees.index')->with('success', 'Usuario eliminado correctamente. ');
+        }
+
+        if ($request->has('from') && $request->from === 'client') {
+            $user->delete();
+            return redirect()->route('clients.index')->with('success', 'Usuario eliminado correctamente. ');
+        }
         $user->delete();
         return redirect()->route('users.index')->with('success', 'Usuario eliminado correctamente.');
     }
