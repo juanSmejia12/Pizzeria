@@ -53,6 +53,9 @@ Route::get('/clients/create', [ClientController::class, 'create'])->name('client
 // Ruta para guardar el cliente (desde el formulario)
 Route::post('/clients', [ClientController::class, 'store'])->name('clients.store');
 Route::delete('/clients/{id}', [ClientController::class, 'destroy'])->name('clients.destroy');
+Route::get('/clients/{client}/edit', [ClientController::class, 'edit'])->name('clients.edit');
+Route::put('/clients/{client}', [ClientController::class, 'update'])->name('clients.update');
+
 
 //User
 Route::get('/users', [UserController::class, 'index'])->name('users.index');

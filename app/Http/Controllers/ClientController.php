@@ -44,7 +44,7 @@ class ClientController extends Controller
         }
 
         $client->update($request->all());
-        return response()->json($client);
+        return redirect()->route('clients.index')->with('success','cliente editado correctamente.');
     }
 
     public function destroy($id)
@@ -69,4 +69,16 @@ class ClientController extends Controller
         }
         return view('client.create', ['user_id' => $request->user_id]);
     }
+    
+    public function edit($id)
+    {
+        $client = Client::find($id);
+
+        if (!$client) {
+            return redirect()->route('clients.index')->with('error', 'Cliente no encontrado.');
+            }
+
+        return view('client.edit', compact('client'));
+    }
+
 }
