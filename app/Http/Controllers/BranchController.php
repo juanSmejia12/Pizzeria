@@ -10,50 +10,49 @@ class BranchController extends Controller
     public function index()
     {
         $branches = Branch::all();
-        return response()->json($branches);
+        return view('branch.index', compact('branches'));
+    }
+
+    public function create()
+    {
+        return view('branch.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:15',
+            'name' => 'required|max:255',
+            'address' => 'required|max:255',
         ]);
 
-        $branch = Branch::create($request->all());
-        return response()->json($branch, 201);
+        Branch::create($request->all());
+        return redirect()->route('branches.index')->with('success', 'Sucursal creada correctamente.');
     }
 
-    public function show($id)
+    public function show(Branch $branch)
     {
-        $branch = Branch::find($id);
-        if ($branch) {
-            return response()->json($branch);
-        }
-
-        return response()->json(['message' => 'Branch not found'], 404);
+        return view('branches.show', compact('branch'));
     }
 
-    public function update(Request $request, $id)
+    public function edit(Branch $branch)
     {
-        $branch = Branch::find($id);
-        if (!$branch) {
-            return response()->json(['message' => 'Branch not found'], 404);
-        }
+        return view('branch.edit', compact('branch'));
+    }
+
+    public function update(Request $request, Branch $branch)
+    {
+        $request->validate([
+            'name' => 'required|max:255',
+            'address' => 'required|max:255',
+        ]);
 
         $branch->update($request->all());
-        return response()->json($branch);
+        return redirect()->route('branches.index')->with('success', 'Sucursal actualizada correctamente.');
     }
 
-    public function destroy($id)
+    public function destroy(Branch $branch)
     {
-        $branch = Branch::find($id);
-        if (!$branch) {
-            return response()->json(['message' => 'Branch not found'], 404);
-        }
-
         $branch->delete();
-        return response()->json(['message' => 'Branch deleted successfully']);
+        return redirect()->route('branches.index')->with('success', 'Sucursal eliminada correctamente.');
     }
 }
