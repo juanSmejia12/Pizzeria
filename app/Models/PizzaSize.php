@@ -9,13 +9,9 @@ class PizzaSize extends Model
 {
     use HasFactory;
 
-    protected $table = 'pizza_size';
-    protected $primaryKey = 'id';
-    protected $fillable = [
-        'pizza_id',
-        'size',
-        'price',
-    ];
+    protected $table = 'pizza_size'; // Esto soluciona el error
+
+    protected $fillable = ['pizza_id', 'size', 'price'];
 
     public function pizza()
     {

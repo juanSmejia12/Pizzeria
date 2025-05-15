@@ -10,7 +10,12 @@ class IngredientController extends Controller
     public function index()
     {
         $ingredients = Ingredient::all();
-        return response()->json($ingredients);
+        return view('ingredient.index', compact('ingredients')); 
+    }
+
+    public function create()
+    {
+        return view('ingredient.create'); 
     }
 
     public function store(Request $request)
@@ -20,39 +25,39 @@ class IngredientController extends Controller
             'description' => 'nullable|string|max:500',
         ]);
 
-        $ingredient = Ingredient::create($request->all());
-        return response()->json($ingredient, 201);
+        Ingredient::create($request->all());
+        return redirect()->route('ingredients.index')->with('success', 'Ingrediente creado correctamente');
     }
 
     public function show($id)
     {
-        $ingredient = Ingredient::find($id);
-        if ($ingredient) {
-            return response()->json($ingredient);
-        }
+        $ingredient = Ingredient::findOrFail($id);
+        return view('ingredient.show', compact('ingredient')); 
+    }
 
-        return response()->json(['message' => 'Ingredient not found'], 404);
+    public function edit($id)
+    {
+        $ingredient = Ingredient::findOrFail($id);
+        return view('ingredient.edit', compact('ingredient')); 
     }
 
     public function update(Request $request, $id)
     {
-        $ingredient = Ingredient::find($id);
-        if (!$ingredient) {
-            return response()->json(['message' => 'Ingredient not found'], 404);
-        }
+        $ingredient = Ingredient::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:500',
+        ]);
 
         $ingredient->update($request->all());
-        return response()->json($ingredient);
+        return redirect()->route('ingredients.index')->with('success', 'Ingrediente actualizado correctamente');
     }
 
     public function destroy($id)
     {
-        $ingredient = Ingredient::find($id);
-        if (!$ingredient) {
-            return response()->json(['message' => 'Ingredient not found'], 404);
-        }
-
+        $ingredient = Ingredient::findOrFail($id);
         $ingredient->delete();
-        return response()->json(['message' => 'Ingredient deleted successfully']);
+        return redirect()->route('ingredients.index')->with('success', 'Ingrediente eliminado correctamente');
     }
 }

@@ -7,15 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pizza extends Model
 {
-    use HasFactory;
+    protected $fillable = ['name'];
 
-    protected $fillable = [
-        'name',
-    ];
-
-    public function pizzaSize()
+    public function sizes()
     {
-        return $this->hasOne(PizzaSize::class);
+        return $this->hasMany(PizzaSize::class);
     }
 
     public function ingredients()
