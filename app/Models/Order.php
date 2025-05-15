@@ -37,4 +37,9 @@ class Order extends Model
     {
         return $this->belongsToMany(ExtraIngredient::class, 'order_extra_ingredient');
     }
+    
+    public function deliveryPerson()
+    {
+        return $this->belongsTo(Employee::class, 'delivery_person_id');
+    }
 }

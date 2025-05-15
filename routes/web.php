@@ -4,6 +4,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -75,3 +76,5 @@ Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('e
 Route::put('/employees/{id}', [EmployeeController::class, 'update'])->name('employees.update');
 
 Route::resource('branches', BranchController::class);
+
+Route::resource('orders', OrderController::class);
