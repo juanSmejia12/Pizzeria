@@ -3,14 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\PizzaRawMaterial;
+use App\Models\Pizza;
+use App\Models\RawMaterial;
 use Illuminate\Http\Request;
 
 class PizzaRawMaterialController extends Controller
 {
     public function index()
     {
-        $pizzaRawMaterials = PizzaRawMaterial::all();
-        return response()->json($pizzaRawMaterials);
+        $pizzaRawMaterials = PizzaRawMaterial::with(['pizza', 'rawMaterial'])->get();
+        return view('PizzaRawMaterial.index', compact('pizzaRawMaterials')); // Cambiado a PizzaRawMaterial.index
+    }
+
+    public function create()
+    {
+        $pizzas = Pizza::all();
+        $rawMaterials = RawMaterial::all();
+        return view('PizzaRawMaterial.create', compact('pizzas', 'rawMaterials')); // Cambiado a PizzaRawMaterial.create
     }
 
     public function store(Request $request)
@@ -18,42 +27,42 @@ class PizzaRawMaterialController extends Controller
         $request->validate([
             'pizza_id' => 'required|exists:pizzas,id',
             'raw_material_id' => 'required|exists:raw_materials,id',
-            'quantity' => 'required|numeric',
+            'quantity' => 'required|numeric|min:0.01',
         ]);
 
-        $pizzaRawMaterial = PizzaRawMaterial::create($request->all());
-        return response()->json($pizzaRawMaterial, 201);
+        PizzaRawMaterial::create($request->all());
+
+        return redirect()->route('pizza_raw_materials.index')->with('success', 'Materia prima asignada correctamente a la pizza.');
     }
 
-    public function show($id)
+    public function edit($id)
     {
-        $pizzaRawMaterial = PizzaRawMaterial::find($id);
-        if ($pizzaRawMaterial) {
-            return response()->json($pizzaRawMaterial);
-        }
+        $pizzaRawMaterial = PizzaRawMaterial::findOrFail($id);
+        $pizzas = Pizza::all();
+        $rawMaterials = RawMaterial::all();
 
-        return response()->json(['message' => 'Pizza Raw Material not found'], 404);
+        return view('PizzaRawMaterial.edit', compact('pizzaRawMaterial', 'pizzas', 'rawMaterials')); // Cambiado a PizzaRawMaterial.edit
     }
 
     public function update(Request $request, $id)
     {
-        $pizzaRawMaterial = PizzaRawMaterial::find($id);
-        if (!$pizzaRawMaterial) {
-            return response()->json(['message' => 'Pizza Raw Material not found'], 404);
-        }
+        $request->validate([
+            'pizza_id' => 'required|exists:pizzas,id',
+            'raw_material_id' => 'required|exists:raw_materials,id',
+            'quantity' => 'required|numeric|min:0.01',
+        ]);
 
+        $pizzaRawMaterial = PizzaRawMaterial::findOrFail($id);
         $pizzaRawMaterial->update($request->all());
-        return response()->json($pizzaRawMaterial);
+
+        return redirect()->route('pizza_raw_materials.index')->with('success', 'Asignación actualizada correctamente.');
     }
 
     public function destroy($id)
     {
-        $pizzaRawMaterial = PizzaRawMaterial::find($id);
-        if (!$pizzaRawMaterial) {
-            return response()->json(['message' => 'Pizza Raw Material not found'], 404);
-        }
-
+        $pizzaRawMaterial = PizzaRawMaterial::findOrFail($id);
         $pizzaRawMaterial->delete();
-        return response()->json(['message' => 'Pizza Raw Material deleted successfully']);
+
+        return redirect()->route('pizza_raw_materials.index')->with('success', 'Materia prima eliminada de la pizza.');
     }
 }

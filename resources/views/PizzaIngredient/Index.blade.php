@@ -1,28 +1,42 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Lista de Ingredientes de Pizza</h1>
-    <a href="{{ route('pizza_ingredients.create') }}" class="btn btn-primary">Agregar Ingrediente a Pizza</a>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Pizza</th>
-                <th>Ingrediente</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($pizza_ingredients as $pizza_ingredient)
+    <h1>Ingredientes de Pizza</h1>
+
+    <a href="{{ route('pizza-ingredients.create') }}" class="btn btn-primary mb-3">Nuevo Ingrediente</a>
+
+    @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    @if ($pizzaIngredients->isEmpty())
+        <p>No hay ingredientes registrados.</p>
+    @else
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <td>{{ $pizza_ingredient->id }}</td>
-                    <td>{{ $pizza_ingredient->pizza->name }}</td>
-                    <td>{{ $pizza_ingredient->ingredient->name }}</td>
-                    <td>
-                        <a href="{{ route('pizza_ingredients.edit', $pizza_ingredient->id) }}" class="btn btn-warning">Editar</a>
-                    </td>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Acciones</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($pizzaIngredients as $ingredient)
+                    <tr>
+                        <td>{{ $ingredient->id }}</td>
+                        <td>{{ $ingredient->name }}</td>
+                        <td>
+                            <a href="{{ route('pizza-ingredients.edit', $ingredient->id) }}" class="btn btn-sm btn-warning">Editar</a>
+                            <form action="{{ route('pizza-ingredients.destroy', $ingredient->id) }}" method="POST" style="display:inline-block">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('¿Deseas eliminar este ingrediente?')">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
 @endsection
