@@ -10,7 +10,7 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::all();
-        return response()->json($employees);
+        return view('employee.index', compact('employees'));
     }
 
     public function store(Request $request)
@@ -23,8 +23,9 @@ class EmployeeController extends Controller
             'hire_date' => 'required|date',
         ]);
 
-        $employee = Employee::create($request->all());
-        return response()->json($employee, 201);
+        Employee::create($request->all());
+
+        return redirect()->route('employees.index')->with('success', 'Empleado creado correctamente.');
     }
 
     public function show($id)
@@ -45,17 +46,40 @@ class EmployeeController extends Controller
         }
 
         $employee->update($request->all());
-        return response()->json($employee);
+        return redirect()->route('employees.index')->with('success','Empleado editado correctamente');
     }
 
     public function destroy($id)
     {
         $employee = Employee::find($id);
+
         if (!$employee) {
-            return response()->json(['message' => 'Employee not found'], 404);
+            return redirect()->route('employees.index')->with('error', 'Empleado no encontrado.');
         }
 
-        $employee->delete();
-        return response()->json(['message' => 'Employee deleted successfully']);
+    if ($employee->user) {
+            return redirect()->route('users.index', ['from' => 'employee', 'employee_id' => $employee->id])
+            ->with('error', 'Para eliminar este empleado, primero elimine su usuario asociado.');    
+         }
+    }
+
+    public function create(Request $request)
+{
+    if (!$request->has('user_id')) {
+        return redirect()->route('users.create')
+            ->with('info', 'Primero debes crear un usuario con el rol de empleado.');
+    }
+
+    return view('employee.create', ['user_id' => $request->user_id]);
+}
+    public function edit($id)
+    {
+        $employee = Employee::find($id);
+
+        if (!$employee) {
+            return redirect()->route('employees.index')->with('error', 'Empleado no encontrado.');
+        }
+
+        return view('employee.edit', compact('employee'));
     }
 }

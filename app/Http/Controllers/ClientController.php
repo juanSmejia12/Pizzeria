@@ -10,20 +10,20 @@ class ClientController extends Controller
     public function index()
     {
         $clients = Client::all();
-        return response()->json($clients);
+        return view('client.index', compact('clients'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'user_id' => 'required|exists:users,id',
-            'address' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:20',
+            'address' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
         ]);
-
-        $client = Client::create($request->all());
-
-        return response()->json($client, 201);
+    
+        Client::create($request->all());
+    
+        return redirect()->route('clients.index')->with('success', 'Cliente creado correctamente.');
     }
 
     public function show($id)
@@ -44,17 +44,41 @@ class ClientController extends Controller
         }
 
         $client->update($request->all());
-        return response()->json($client);
+        return redirect()->route('clients.index')->with('success','cliente editado correctamente.');
     }
 
     public function destroy($id)
     {
         $client = Client::find($id);
-        if (!$client) {
-            return response()->json(['message' => 'Client not found'], 404);
-        }
 
-        $client->delete();
-        return response()->json(['message' => 'Client deleted successfully']);
+        if (!$client) {
+            return redirect()->route('clients.index')->with('error', 'Cliente no encontrado.');
+        }
+    
+        if ($client->user) {
+            return redirect()->route('users.index', ['from' => 'client', 'client_id' => $client->id])
+                ->with('error', 'Para eliminar este cliente, primero elimine su usuario asociado.');
+        }
+        
     }
+    public function create(Request $request)
+    {
+        if (!$request->has('user_id')) {
+            return redirect()->route('users.create')
+                ->with('info', 'Primero debes crear un usuario con el rol de cliente.');//como la tabla cliente depende del id del ususario para ser creado, es necesario pasar el dato 
+        }
+        return view('client.create', ['user_id' => $request->user_id]);
+    }
+    
+    public function edit($id)
+    {
+        $client = Client::find($id);
+
+        if (!$client) {
+            return redirect()->route('clients.index')->with('error', 'Cliente no encontrado.');
+            }
+
+        return view('client.edit', compact('client'));
+    }
+
 }
