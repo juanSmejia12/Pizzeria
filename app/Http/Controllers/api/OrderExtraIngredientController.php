@@ -3,47 +3,70 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\OrderExtraIngredient;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class OrderExtraIngredientController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response()->json(OrderExtraIngredient::all(), 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'extra_ingredient_id' => 'required|exists:extra_ingredients,id',
+            'quantity' => 'required|integer|min:1', // Agregado si lo manejas en la tabla pivot
+        ]);
+
+        $orderExtraIngredient = OrderExtraIngredient::create($validated);
+
+        return response()->json($orderExtraIngredient, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $item = OrderExtraIngredient::find($id);
+
+        if (!$item) {
+            return response()->json(['message' => 'Order Extra Ingredient not found'], 404);
+        }
+
+        return response()->json($item, 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $item = OrderExtraIngredient::find($id);
+
+        if (!$item) {
+            return response()->json(['message' => 'Order Extra Ingredient not found'], 404);
+        }
+
+        $validated = $request->validate([
+            'order_id' => 'sometimes|required|exists:orders,id',
+            'extra_ingredient_id' => 'sometimes|required|exists:extra_ingredients,id',
+            'quantity' => 'sometimes|required|integer|min:1',
+        ]);
+
+        $item->update($validated);
+
+        return response()->json($item, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $item = OrderExtraIngredient::find($id);
+
+        if (!$item) {
+            return response()->json(['message' => 'Order Extra Ingredient not found'], 404);
+        }
+
+        $item->delete();
+
+        return response()->json(['message' => 'Order Extra Ingredient deleted successfully'], 200);
     }
 }

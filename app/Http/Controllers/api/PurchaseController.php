@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Purchase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class PurchaseController extends Controller

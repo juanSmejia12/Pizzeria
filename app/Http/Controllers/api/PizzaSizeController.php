@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\PizzaSize;
+use App\Models\Pizza;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-
 class PizzaSizeController extends Controller
 {
     /**

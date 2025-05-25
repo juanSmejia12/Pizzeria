@@ -3,47 +3,66 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Pizza;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class PizzaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response()->json(Pizza::all(), 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $pizza = Pizza::create($validated);
+
+        return response()->json($pizza, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $pizza = Pizza::find($id);
+
+        if (!$pizza) {
+            return response()->json(['message' => 'Pizza not found'], 404);
+        }
+
+        return response()->json($pizza, 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $pizza = Pizza::find($id);
+
+        if (!$pizza) {
+            return response()->json(['message' => 'Pizza not found'], 404);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $pizza->update($validated);
+
+        return response()->json($pizza, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $pizza = Pizza::find($id);
+
+        if (!$pizza) {
+            return response()->json(['message' => 'Pizza not found'], 404);
+        }
+
+        $pizza->delete();
+
+        return response()->json(['message' => 'Pizza deleted successfully'], 200);
     }
 }
