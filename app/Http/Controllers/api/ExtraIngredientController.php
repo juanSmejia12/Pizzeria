@@ -3,47 +3,68 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ExtraIngredient;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class ExtraIngredientController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response()->json(ExtraIngredient::all(), 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+        ]);
+
+        $extraIngredient = ExtraIngredient::create($validated);
+
+        return response()->json($extraIngredient, 201); // 201: Created
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $extraIngredient = ExtraIngredient::find($id);
+
+        if (!$extraIngredient) {
+            return response()->json(['message' => 'Extra Ingredient not found'], 404);
+        }
+
+        return response()->json($extraIngredient, 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $extraIngredient = ExtraIngredient::find($id);
+
+        if (!$extraIngredient) {
+            return response()->json(['message' => 'Extra Ingredient not found'], 404);
+        }
+
+        $validated = $request->validate([
+            'name' => 'sometimes|required|string|max:255',
+            'price' => 'sometimes|required|numeric',
+        ]);
+
+        $extraIngredient->update($validated);
+
+        return response()->json($extraIngredient, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $extraIngredient = ExtraIngredient::find($id);
+
+        if (!$extraIngredient) {
+            return response()->json(['message' => 'Extra Ingredient not found'], 404);
+        }
+
+        $extraIngredient->delete();
+
+        return response()->json(null, 204); // 204: No Content
     }
 }
