@@ -3,47 +3,47 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class BranchController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response()->json(Branch::all(), 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'address' => 'required|max:255',
+        ]);
+
+        $branch = Branch::create($validated);
+        return response()->json($branch, 201); // 201: Created
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Branch $branch)
     {
-        //
+        return response()->json($branch, 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Branch $branch)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'address' => 'required|max:255',
+        ]);
+
+        $branch->update($validated);
+        return response()->json($branch, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Branch $branch)
     {
-        //
+        $branch->delete();
+        return response()->json(null, 204); // 204: No Content
     }
 }
