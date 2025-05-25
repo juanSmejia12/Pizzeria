@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Pizza extends Model
@@ -20,6 +21,6 @@ class Pizza extends Model
 
     public function rawMaterials()
     {
-        return $this->belongsToMany(RawMaterial::class, 'pizza_raw_material')->withPivot('quantity');
+        return $this->belongsToMany(RawMaterial::class, 'pizza_raw_material');
     }
 }

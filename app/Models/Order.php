@@ -2,20 +2,25 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $fillable = ['client_id', 'delivery_person_id', 'branch_id', 'status', 'total', 'order_date'];
+    use HasFactory;
+
+    protected $fillable = [
+        'client_id',
+        'branch_id',
+        'total_price',
+        'status',
+        'delivery_type',
+        'delivery_person_id',
+    ];
 
     public function client()
     {
         return $this->belongsTo(Client::class);
-    }
-
-    public function deliveryPerson()
-    {
-        return $this->belongsTo(Employee::class, 'delivery_person_id');
     }
 
     public function branch()
@@ -25,6 +30,16 @@ class Order extends Model
 
     public function pizzas()
     {
-        return $this->belongsToMany(PizzaSize::class, 'order_pizza')->withPivot('quantity');
+        return $this->belongsToMany(PizzaSize::class, 'order_pizza');
+    }
+
+    public function extraIngredients()
+    {
+        return $this->belongsToMany(ExtraIngredient::class, 'order_extra_ingredient');
+    }
+    
+    public function deliveryPerson()
+    {
+        return $this->belongsTo(Employee::class, 'delivery_person_id');
     }
 }
