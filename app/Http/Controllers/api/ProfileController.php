@@ -14,42 +14,47 @@ use Illuminate\Http\Request;
 class ProfileController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostrar la información del perfil del usuario autenticado.
      */
-    public function index()
+    public function show(Request $request): JsonResponse
     {
-        //
+        return response()->json($request->user());
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Actualizar la información del perfil del usuario autenticado.
      */
-    public function store(Request $request)
+    public function update(ProfileUpdateRequest $request): JsonResponse
     {
-        //
+        $user = $request->user();
+        $user->fill($request->validated());
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
+
+        return response()->json(['message' => 'Perfil actualizado correctamente.', 'user' => $user]);
     }
 
     /**
-     * Display the specified resource.
+     * Eliminar la cuenta del usuario autenticado.
      */
-    public function show(string $id)
+    public function destroy(Request $request): JsonResponse
     {
-        //
-    }
+        $request->validate([
+            'password' => ['required', 'current_password'],
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        $user = $request->user();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        Auth::logout();
+        $user->delete();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json(['message' => 'Cuenta eliminada correctamente.']);
     }
 }

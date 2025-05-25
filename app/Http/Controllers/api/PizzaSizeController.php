@@ -7,45 +7,68 @@ use App\Models\PizzaSize;
 use App\Models\Pizza;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+
 class PizzaSizeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $pizzaSizes = PizzaSize::with('pizza')->get();
+        return response()->json($pizzaSizes);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'pizza_id' => 'required|exists:pizzas,id',
+            'size' => 'required|in:pequeña,mediana,grande',
+            'price' => 'required|numeric|min:0',
+        ]);
+
+        $pizzaSize = PizzaSize::create($request->all());
+
+        return response()->json($pizzaSize, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $pizzaSize = PizzaSize::with('pizza')->find($id);
+
+        if (!$pizzaSize) {
+            return response()->json(['message' => 'No encontrado'], 404);
+        }
+
+        return response()->json($pizzaSize);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $pizzaSize = PizzaSize::find($id);
+
+        if (!$pizzaSize) {
+            return response()->json(['message' => 'No encontrado'], 404);
+        }
+
+        $request->validate([
+            'pizza_id' => 'required|exists:pizzas,id',
+            'size' => 'required|in:pequeña,mediana,grande',
+            'price' => 'required|numeric|min:0',
+        ]);
+
+        $pizzaSize->update($request->all());
+
+        return response()->json($pizzaSize);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $pizzaSize = PizzaSize::find($id);
+
+        if (!$pizzaSize) {
+            return response()->json(['message' => 'No encontrado'], 404);
+        }
+
+        $pizzaSize->delete();
+
+        return response()->json(['message' => 'Tamaño de pizza eliminado correctamente.']);
     }
 }
