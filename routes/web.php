@@ -87,4 +87,5 @@ Route::resource('pizza-ingredients', PizzaIngredientController::class);
 // PizzaRawMaterial
 Route::resource('pizza-raw-materials', PizzaRawMaterialController::class);
 
+//order_extra_ingredient
 require __DIR__.'/auth.php';
