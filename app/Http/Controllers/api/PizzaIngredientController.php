@@ -63,15 +63,26 @@ class PizzaIngredientController extends Controller
         return response()->json($pizzaIngredient, 200);
     }
 
-    public function destroy($id)
-    {
-        $pizzaIngredient = PizzaIngredient::find($id);
+public function destroy($id)
+{
+    $pizzaIngredient = PizzaIngredient::find($id);
 
-        if (!$pizzaIngredient) {
-            return response()->json(['message' => 'No encontrado'], 404);
-        }
-
-        $pizzaIngredient->delete();
-        return response()->json(['message' => 'Eliminado correctamente'], 200);
+    if (!$pizzaIngredient) {
+        return response()->json([
+            'success' => false,
+            'message' => 'No encontrado'
+        ], 404);
     }
+
+    $pizzaIngredient->delete();
+
+    $updatedList = PizzaIngredient::with(['pizza', 'ingredient'])->get();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Eliminado correctamente',
+        'pizza_ingredients' => $updatedList
+    ], 200);
+}
+
 }

@@ -11,7 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\api\PizzaController;
 use App\Http\Controllers\PizzaSizeController;
 use App\Http\Controllers\api\IngredientController;
-use App\Http\Controllers\PizzaIngredientController;
+use App\Http\Controllers\api\PizzaIngredientController;
 use App\Http\Controllers\PizzaRawMaterialController;
 use App\Http\Controllers\ExtraIngredientController;
 use App\Http\Controllers\OrderExtraIngredientController;
