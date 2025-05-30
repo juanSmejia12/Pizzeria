@@ -8,7 +8,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PizzaController;
+use App\Http\Controllers\api\PizzaController;
 use App\Http\Controllers\PizzaSizeController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\PizzaIngredientController;

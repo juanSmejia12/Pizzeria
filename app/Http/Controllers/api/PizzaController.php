@@ -63,6 +63,9 @@ class PizzaController extends Controller
 
         $pizza->delete();
 
-        return response()->json(['message' => 'Pizza deleted successfully'], 200);
+        return response()->json([
+        'success' => true,
+        'pizzas' => Pizza::all()
+        ], 200);
     }
 }
