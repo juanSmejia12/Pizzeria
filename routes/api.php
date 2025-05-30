@@ -10,7 +10,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\api\PizzaController;
 use App\Http\Controllers\PizzaSizeController;
-use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\api\IngredientController;
 use App\Http\Controllers\PizzaIngredientController;
 use App\Http\Controllers\PizzaRawMaterialController;
 use App\Http\Controllers\ExtraIngredientController;
