@@ -1,21 +1,26 @@
-{{-- resources/views/branch/edit.blade.php --}}
 @extends('layouts.app')
 
 @section('content')
 <div class="container">
     <h1>Editar Sucursal</h1>
-    <form action="{{ route('branches.update', $branch->id) }}" method="POST">
+
+    <form action="{{ route('branches.update', $branch) }}" method="POST">
         @csrf
         @method('PUT')
-        <div class="form-group mb-3">
-            <label for="name">Nombre de la Sucursal</label>
-            <input type="text" name="name" class="form-control" value="{{ $branch->name }}" required>
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" name="name" value="{{ old('name', $branch->name) }}" required>
+            @error('name') <div class="text-danger">{{ $message }}</div> @enderror
         </div>
-        <div class="form-group mb-3">
-            <label for="address">Dirección</label>
-            <input type="text" name="address" class="form-control" value="{{ $branch->address }}" required>
+
+        <div class="mb-3">
+            <label for="address" class="form-label">Dirección</label>
+            <input type="text" class="form-control" name="address" value="{{ old('address', $branch->address) }}" required>
+            @error('address') <div class="text-danger">{{ $message }}</div> @enderror
         </div>
-        <button type="submit" class="btn btn-primary">Actualizar Sucursal</button>
+
+        <button type="submit" class="btn btn-primary">Actualizar</button>
         <a href="{{ route('branches.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>

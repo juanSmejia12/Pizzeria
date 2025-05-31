@@ -1,25 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Editar Usuario</h1>
-    <form action="{{ route('users.update', $user->id) }}" method="POST">
+    <h1>Editar Cliente</h1>
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('clients.update', $client->id) }}" method="POST">
         @csrf
         @method('PUT')
+
         <div class="form-group">
-            <label for="name">Nombre</label>
-            <input type="text" name="name" class="form-control" value="{{ $user->name }}" required>
+            <label for="address">Dirección:</label>
+            <input type="text" name="address" class="form-control" value="{{ old('address', $client->address) }}" required>
         </div>
+
         <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" name="email" class="form-control" value="{{ $user->email }}" required>
+            <label for="phone">Teléfono:</label>
+            <input type="text" name="phone" class="form-control" value="{{ old('phone', $client->phone) }}" required>
         </div>
-        <div class="form-group">
-            <label for="role">Rol</label>
-            <select name="role" class="form-control" required>
-                <option value="cliente" {{ $user->role == 'cliente' ? 'selected' : '' }}>Cliente</option>
-                <option value="empleado" {{ $user->role == 'empleado' ? 'selected' : '' }}>Empleado</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Actualizar</button>
+
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        <a href="{{ route('clients.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>
 @endsection

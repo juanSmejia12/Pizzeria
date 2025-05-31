@@ -37,7 +37,12 @@
                         <td>${{ number_format($employee->salary, 2) }}</td>
                         <td>{{ \Carbon\Carbon::parse($employee->hire_date)->format('d/m/Y') }}</td>
                         <td>
-                            {{-- <a href="{{ route('employees.edit', $employee->id) }}" class="btn btn-warning btn-sm">Editar</a> --}}
+                            <form action="{{ route('employees.destroy', $employee->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Está seguro de eliminar este empleado?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
+                            <a href="{{ route('employees.edit', $employee->id) }}" class="btn btn-warning btn-sm">Editar</a> 
                         </td>
                     </tr>
                 @endforeach

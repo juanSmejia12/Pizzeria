@@ -44,18 +44,22 @@ class ClientController extends Controller
         }
 
         $client->update($request->all());
-        return response()->json($client);
+        return redirect()->route('clients.index')->with('success','cliente editado correctamente.');
     }
 
     public function destroy($id)
     {
         $client = Client::find($id);
-        if (!$client) {
-            return response()->json(['message' => 'Client not found'], 404);
-        }
 
-        $client->delete();
-        return response()->json(['message' => 'Client deleted successfully']);
+        if (!$client) {
+            return redirect()->route('clients.index')->with('error', 'Cliente no encontrado.');
+        }
+    
+        if ($client->user) {
+            return redirect()->route('users.index', ['from' => 'client', 'client_id' => $client->id])
+                ->with('error', 'Para eliminar este cliente, primero elimine su usuario asociado.');
+        }
+        
     }
     public function create(Request $request)
     {
@@ -65,4 +69,16 @@ class ClientController extends Controller
         }
         return view('client.create', ['user_id' => $request->user_id]);
     }
+    
+    public function edit($id)
+    {
+        $client = Client::find($id);
+
+        if (!$client) {
+            return redirect()->route('clients.index')->with('error', 'Cliente no encontrado.');
+            }
+
+        return view('client.edit', compact('client'));
+    }
+
 }

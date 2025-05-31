@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\BranchController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PizzaController;
 use App\Http\Controllers\PizzaSizeController;
@@ -46,6 +48,10 @@ Route::middleware('auth')->group(function () {
 Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
 Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
 Route::post('/clients', [ClientController::class, 'store'])->name('clients.store');
+Route::delete('/clients/{id}', [ClientController::class, 'destroy'])->name('clients.destroy');
+Route::get('/clients/{client}/edit', [ClientController::class, 'edit'])->name('clients.edit');
+Route::put('/clients/{client}', [ClientController::class, 'update'])->name('clients.update');
+
 
 // Usuarios
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
@@ -59,10 +65,14 @@ Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
 Route::get('/employees/create', [EmployeeController::class, 'create'])->name('employees.create');
 Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
+Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
+Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+Route::put('/employees/{id}', [EmployeeController::class, 'update'])->name('employees.update');
 
-// 🟢 RUTAS NUEVAS: Pizza, PizzaSize, Ingredient, PizzaIngredient, PizzaRawMaterial
+Route::resource('branches', BranchController::class);
 
-// Pizza
+Route::resource('orders', OrderController::class);
+
 Route::resource('pizzas', PizzaController::class);
 
 // PizzaSize
@@ -77,4 +87,5 @@ Route::resource('pizza-ingredients', PizzaIngredientController::class);
 // PizzaRawMaterial
 Route::resource('pizza-raw-materials', PizzaRawMaterialController::class);
 
+//order_extra_ingredient
 require __DIR__.'/auth.php';
