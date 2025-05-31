@@ -11,7 +11,8 @@ class ClientController extends Controller
 {
     public function index()
     {
-        return response()->json(Client::all(), 200);
+            $clients = Client::with('user')->get(); 
+            return response()->json($clients, 200);
     }
 
     public function store(Request $request)
@@ -56,22 +57,17 @@ class ClientController extends Controller
         return response()->json($client, 200);
     }
 
-    public function destroy($id)
-    {
-        $client = Client::find($id);
+public function destroy($id)
+{
+    $client = Client::find($id);
 
-        if (!$client) {
-            return response()->json(['message' => 'Client not found'], 404);
-        }
-
-        if ($client->user) {
-            return response()->json([
-                'message' => 'Para eliminar este cliente, primero elimine su usuario asociado.'
-            ], 400); // 400: Bad Request
-        }
-
-        $client->delete();
-
-        return response()->json(null, 204); // 204: No Content
+    if (!$client) {
+        return response()->json(['success' => false, 'message' => 'Cliente no encontrado'], 404);
     }
+
+    $client->delete();
+
+    return response()->json(['success' => true, 'message' => 'Cliente eliminado correctamente']);
+}
+
 }
