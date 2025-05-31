@@ -21,27 +21,30 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('employees.index') }}">Empleados</a>
                 </li>
-                <li class="nav-item">
+<<<<<<< HEAD
+=======
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="{{ route('extra-ingredients.index') }}">Ingredientes Extra</a>
-                </li>
+                </li> --}}
+>>>>>>> mejia
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('ingredients.index') }}">Ingredientes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('orders.index') }}">Órdenes</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="{{ route('pizzas.index') }}">Pizzas</a>
                 </li>
-                <li class="nav-item">
+<<<<<<< HEAD
+=======
+                {{--<li class="nav-item">
                     <a class="nav-link" href="{{ route('purchases.index') }}">Compras</a>
-                </li>
-                <li class="nav-item">
+                </li>--}}
+                {{--<li class="nav-item">
                     <a class="nav-link" href="{{ route('suppliers.index') }}">Proveedores</a>
-                </li>
+                </li>--}}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('profile.edit') }}">Perfil</a>
                 </li>
+>>>>>>> mejia
             </ul>
         </div>
     </nav>
